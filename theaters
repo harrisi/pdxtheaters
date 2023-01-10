@@ -1,0 +1,75 @@
+Should separate out local theaters from chains like Regal, Century since the latter will have a common scheme.
+
+-- 
+
+Moreland Theater
+  - morelandtheater.com; (#Table2 > tbody > tr > td.rightcol > form > select).selected; a.displaytitle; a.showtime;
+  - also lists other days in the form
+
+Cinemagic
+  - (tickets.)thecinemagictheater.com; selector is annoyingly complex.
+  - title:
+    - document.querySelector('#consumer-layout > div > main > span > div:nth-child(1) > div > div > div > div:nth-child(3) > div > div > div > div.row.container > div.col-7.col-sm-3.q-px-md.text-white > div.text-h5').innerHTML.split('\n').map(e => e.trim()).filter(e => e.length > 1)[0]
+  - showtime:
+    - document.querySelector('#consumer-layout > div > main > span > div:nth-child(1) > div > div > div > div:nth-child(3) > div > div > div > div.row.container > div.col-12.col-sm-6 > div > div > div > div:nth-child(1) > button > span.q-btn__wrapper.col.row.q-anchor--skip > span').innerText
+
+Century 16 Eastport
+  - cinemark.com/theatres/or-portland/century-16-eastport-plaza; document.querySelector("#\\39 0552").innerText; .showtimeMovieTimes
+  - this will have multiple movies and showtimes so more work
+
+Regal Lloyd Center
+  - regmovies.com/theatres/regal-lloyd-center-imax/0807#/buy-tickets-by-cinema?in-cinema=0807&at=2023-01-10&view-mode=list
+  - document.querySelector("body > section.light.quickbook-section.npm-quickbook > section > div.qb.qb-by-cinema > section > div.container > div.row.movie-row.first-movie-row > div > div > div:nth-child(2) > div > div:nth-child(1) > a > h3")
+
+Studio One Theaters
+Laurelhurst
+Regal Pioneer Place
+Regal Fox Tower
+Century Clackamas
+Cinema 21
+Cinemark (82nd)
+Wunderland Milwaukie
+Living Room Theaters
+Academy Theater
+Oak Grove 8
+Clinton Street
+Avalon
+Empiracal
+5th Avenue
+Hollywood Theater
+Cinemark XD Clackamas Town Center
+Regal Hilltop
+Lake Theater
+McMenamins Bagdad
+McMenamins Misson Theater
+PAM CUT
+Regal Division Street
+McMenamins Kennedy School
+Canby Cinema 8
+Aladdin Theater
+Regal Tigard
+Electric Castles Wunderland
+Regal Bridgeport
+Jubitz Cinema
+Joy Cinema
+St. John's Twin Cinema
+Mt. Hood Theater
+AMC Mill Plain
+Regal Cascade
+Regal Stark Street
+Century 16 Cedar Hills
+Regal Wilsonville
+Regal City Center
+Regal Vancouver Plaza
+AMC Progress Ridge
+Kiggins Theater
+Liberty Theater
+Regal Evergreen
+AMC Vancouver Mall
+McMenamins St. John's
+Regal Movies On TV
+Regal Cinema 99
+Sandy Cinema
+McMenamins Power Station
+Wunderland
+Cornelius 10
