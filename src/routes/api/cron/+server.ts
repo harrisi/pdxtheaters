@@ -57,8 +57,6 @@ async function run() {
   }
 }
 
-run().catch(console.error)
-
 export const POST = (async ({ request }) => {
   const foo = await request.json()
   console.log(JSON.stringify(foo))
@@ -69,6 +67,7 @@ export const GET = (({ request }) => {
   try {
     const auth = request.headers.get('Authorization')
     if (auth === `Bearer ${API_SECRET_KEY}`) {
+      run().catch(console.error)
       return json({a: 5, b: 6})
     }
   } catch (err: any) {
