@@ -1,11 +1,11 @@
 import { json, error } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { API_SECRET_KEY, MONGODB_URI } from '$env/static/private'
-import { MongoClient, ServerApiVersion } from 'mongodb'
+import { MongoClient } from 'mongodb'
 
 const client = new MongoClient(MONGODB_URI)
 
-async function run() {
+async function run(passed: boolean) {
   try {
     await client.connect()
 
@@ -34,14 +34,14 @@ async function run() {
     // }
 
     let doc: Showing = {
-      theater: 'theater name',
-      movie: 'movie title',
+      theater: `(${passed}) theater name`,
+      movie: `(${passed}) movie title`,
       showtime: new Date(),
     }
 
     let doc2: Showing = {
-      theater: 'other theater name',
-      movie: 'other movie title',
+      theater: `(${passed}) other theater name`,
+      movie: `(${passed}) other movie title`,
       showtime: new Date(),
     }
 
@@ -59,12 +59,14 @@ export const POST = (async ({ request }) => {
   return json({a: 1, b: 2, c: foo})
 }) satisfies RequestHandler
 
-export const GET = (({ request }) => {
+export const GET = (async ({ request }) => {
   try {
     const auth = request.headers.get('Authorization')
     if (auth === `Bearer ${API_SECRET_KEY}`) {
-      run().catch(console.error)
+      await run(true).catch(console.error)
       return json({a: 5, b: 6})
+    } else {
+      await run(false).catch(console.error)
     }
   } catch (err: any) {
     throw error(500, err.message)
