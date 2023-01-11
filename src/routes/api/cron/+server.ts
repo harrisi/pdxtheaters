@@ -3,11 +3,7 @@ import type { RequestHandler } from './$types'
 import { API_SECRET_KEY, MONGODB_URI } from '$env/static/private'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 
-const client = new MongoClient(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-})
+const client = new MongoClient(MONGODB_URI)
 
 async function run() {
   try {
@@ -73,5 +69,6 @@ export const GET = (({ request }) => {
   } catch (err: any) {
     throw error(500, err.message)
   }
+  return json({err: 'unknown'})
 }) satisfies RequestHandler
 
