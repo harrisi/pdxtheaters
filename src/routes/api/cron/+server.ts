@@ -28,6 +28,23 @@ const theaters = [
     titleSelector: 'h4.uk-margin-bottom-remove',
     showtimeSelector: 'div > div.uk-width-1-4 > button',
   },
+
+  {
+    name: 'Laurelhurst',
+    url: 'https://laurelhursttheater.com',
+    titleSelector: 'foo',
+    showtimeSelector: (doc: Document) => {
+      return doc.body.innerText
+    },
+  },
+
+  {
+    name: 'Living Room',
+    url: 'https://livingroomtheater.com',
+    titleSelector: (doc: Document) => {
+      return doc.body.innerText
+    },
+  },
 ]
 
 // MM/DD/YYY (I don't like this)
@@ -41,20 +58,25 @@ interface Showing {
 
 async function run() {
   try {
-
-    // XXX Note about above: the timezone is off.
-
     for (let theater of theaters) {
       fetch(theater.url)
       .then(response => response.text())
       .then(html => {
-        const dom = new JSDOM(html/*, { pretendToBeVisual: true, resources: 'usable', runScripts: 'outside-only', }*/)
-
+        const dom = new JSDOM(html)
         const { document } = dom.window
-        let movie = document.querySelector(theater.titleSelector)?.innerHTML.trim() || ''
-        let showtime = document.querySelector(theater.showtimeSelector)?.innerHTML.trim() || ''
-        if (theater.showtimeSelectorFn) {
-          showtime = theater.showtimeSelectorFn(showtime)
+        let movie: string = ''
+        let showtime: string = ''
+
+        if (typeof theater.titleSelector === 'string') {
+          movie = document.querySelector(theater.titleSelector)?.innerHTML.trim() || ''
+        } else if (typeof theater.titleSelector === 'function') {
+          movie = theater.titleSelector(document)
+        }
+
+        if (typeof theater.showtimeSelector === 'string') {
+          showtime = document.querySelector(theater.showtimeSelector)?.innerHTML.trim() || ''
+        } else if (typeof theater.showtimeSelector === 'function') {
+          showtime = theater.showtimeSelector(document)
         }
 
         let doc = {
@@ -67,8 +89,8 @@ async function run() {
 
         return doc
       })
+      // this is really silly. shouldn't be opening a new connection and inserting one by one.
       .then(async doc => {
-        console.log(doc)
         await client.connect()
 
         // should be narrowed?
@@ -81,17 +103,6 @@ async function run() {
       .catch(console.error)
     }
 
-    // let doc: Showing = {
-    //   theater: `(${passed}) theater name`,
-    //   movie: `(${passed}) movie title`,
-    //   showtime: new Date(),
-    // }
-
-    // let doc2: Showing = {
-    //   theater: `(${passed}) other theater name`,
-    //   movie: `(${passed}) other movie title`,
-    //   showtime: new Date(),
-    // }
   } finally {
     await client.close()
   }
@@ -107,10 +118,9 @@ export const GET = (async ({ request }) => {
   try {
     const auth = request.headers.get('Authorization')
     if (auth === `Bearer ${API_SECRET_KEY}`) {
-      await run(true).catch(console.error)
+      await run().catch(console.error)
       return json({a: 5, b: 6})
     } else {
-      await run(false).catch(console.error)
     }
   } catch (err: any) {
     throw error(500, err.message)
