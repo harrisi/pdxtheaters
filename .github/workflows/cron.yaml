@@ -8,5 +8,5 @@ jobs:
     steps:
       - name: Get showtimes
         run: |
-          curl --url 'https://pdxtheaters-git-dev-ianhedoesit.vercel.app/api/cron' \
+          curl --url 'https://pdxtheaters.com/api/cron' \
           --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
