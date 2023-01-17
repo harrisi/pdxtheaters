@@ -6,6 +6,7 @@ import { JSDOM } from 'jsdom'
 
 const client = new MongoClient(MONGODB_URI)
 
+// these should probably be somewhere else
 const theaters = [
   {
     name: 'Moreland',
@@ -29,22 +30,22 @@ const theaters = [
     showtimeSelector: 'div > div.uk-width-1-4 > button',
   },
 
-  {
-    name: 'Laurelhurst',
-    url: 'https://laurelhursttheater.com',
-    titleSelector: 'foo',
-    showtimeSelector: (doc: Document) => {
-      return doc.body.innerText
-    },
-  },
+  // {
+  //   name: 'Laurelhurst',
+  //   url: 'https://laurelhursttheater.com',
+  //   titleSelector: 'foo',
+  //   showtimeSelector: (doc: Document) => {
+  //     return doc.body.innerText
+  //   },
+  // },
 
-  {
-    name: 'Living Room',
-    url: 'https://livingroomtheater.com',
-    titleSelector: (doc: Document) => {
-      return doc.body.innerText
-    },
-  },
+  // {
+  //   name: 'Living Room',
+  //   url: 'https://livingroomtheater.com',
+  //   titleSelector: (doc: Document) => {
+  //     return doc.body.innerText
+  //   },
+  // },
 ]
 
 // MM/DD/YYY (I don't like this)
