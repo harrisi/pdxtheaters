@@ -6,18 +6,25 @@ import { JSDOM } from 'jsdom'
 
 const client = new MongoClient(MONGODB_URI)
 
+interface Theater {
+  name: string,
+  url: string,
+  titleSelector: string | Function,
+  showtimeSelector: string | Function,
+}
+
 // these should probably be somewhere else
-const theaters = [
+const theaters: Theater[] = [
   {
     name: 'Moreland',
     //url: 'http://morelandtheater.com',
     url: 'https://697452.formovietickets.com:2235',
     titleSelector: 'a.displaytitle',
     showtimeSelector: 'td.rightcol',
-    showtimeSelectorFn: (t: string) => {
-      let match = t.match(/\d+:\d+[ap]/)
-      return match ? match[0] : ''
-    }
+    // showtimeSelectorFn: (t: string) => {
+    //   let match = t.match(/\d+:\d+[ap]/)
+    //   return match ? match[0] : ''
+    // }
   },
 
   // this is really annoying. the mcmenamins site uses javascript to show stuff but the nodes should still be there
