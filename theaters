@@ -13,25 +13,37 @@ Cinemagic
   - showtime:
     - document.querySelector('#consumer-layout > div > main > span > div:nth-child(1) > div > div > div > div:nth-child(3) > div > div > div > div.row.container > div.col-12.col-sm-6 > div > div > div > div:nth-child(1) > button > span.q-btn__wrapper.col.row.q-anchor--skip > span').innerText
 
-Century 16 Eastport
-  - cinemark.com/theatres/or-portland/century-16-eastport-plaza; document.querySelector("#\\39 0552").innerText; .showtimeMovieTimes
-  - this will have multiple movies and showtimes so more work
+Oak Grove 8
+  - https://ticketing.uswest.veezi.com/sessions/?siteToken=re75s21ee1j2qrbp3pj3npy59r; this seems annoying.
+  - https://familycinemas.com/now-playing; also annoying
 
-Regal Lloyd Center
-  - regmovies.com/theatres/regal-lloyd-center-imax/0807#/buy-tickets-by-cinema?in-cinema=0807&at=2023-01-10&view-mode=list
-  - document.querySelector("body > section.light.quickbook-section.npm-quickbook > section > div.qb.qb-by-cinema > section > div.container > div.row.movie-row.first-movie-row > div > div > div:nth-child(2) > div > div:nth-child(1) > a > h3")
+Joy Cinema
+  - https://www.thejoycinema.com/index.html; I don't even know how to buy a ticket for myself.
+
+McMenamins Kennedy School
+  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/now-playing/;
+  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/coming-soon/;
+  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/view-by-date/;
+
+Living Room Theaters
+  - https://pdx.livingroomtheaters.com/nowplaying;
+  - https://pdx.livingroomtheaters.com/comingsoon;
+
+Cinema 21
+  - https://www.cinema21.com/;
+  - https://www.cinema21.com/coming-soon;
+
+Laurelhurst
+  - https://www.laurelhursttheater.com/;
+  - https://www.laurelhursttheater.com/comingsoon;
 
 Studio One Theaters
-Laurelhurst
 Regal Pioneer Place
 Regal Fox Tower
 Century Clackamas
-Cinema 21
 Cinemark (82nd)
 Wunderland Milwaukie
-Living Room Theaters
 Academy Theater
-Oak Grove 8
 Clinton Street
 Avalon
 Empiracal
@@ -44,14 +56,12 @@ McMenamins Bagdad
 McMenamins Misson Theater
 PAM CUT
 Regal Division Street
-McMenamins Kennedy School
 Canby Cinema 8
 Aladdin Theater
 Regal Tigard
 Electric Castles Wunderland
 Regal Bridgeport
 Jubitz Cinema
-Joy Cinema
 St. John's Twin Cinema
 Mt. Hood Theater
 AMC Mill Plain
@@ -73,3 +83,11 @@ Sandy Cinema
 McMenamins Power Station
 Wunderland
 Cornelius 10
+
+Century 16 Eastport
+  - cinemark.com/theatres/or-portland/century-16-eastport-plaza; document.querySelector("#\\39 0552").innerText; .showtimeMovieTimes
+  - this will have multiple movies and showtimes so more work
+
+Regal Lloyd Center
+  - regmovies.com/theatres/regal-lloyd-center-imax/0807#/buy-tickets-by-cinema?in-cinema=0807&at=2023-01-10&view-mode=list
+  - document.querySelector("body > section.light.quickbook-section.npm-quickbook > section > div.qb.qb-by-cinema > section > div.container > div.row.movie-row.first-movie-row > div > div > div:nth-child(2) > div > div:nth-child(1) > a > h3")
