@@ -1,7 +1,7 @@
 name: daily-cron
-on:
-  schedule:
-    - cron: '13 13 * * *'
+on: workflow_dispatch
+  #schedule:
+  #  - cron: '13 13 * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
