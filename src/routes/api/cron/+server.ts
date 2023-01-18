@@ -124,12 +124,12 @@ export const POST = (async ({ request }) => {
 
 export const GET = (async ({ request }) => {
   try {
-    const auth = request.headers.get('Authorization')
+    const auth = request.headers.get('X-Authorization')
     if (auth === `Bearer ${API_SECRET_KEY}`) {
       await run().catch(console.error)
       return json({a: 5, b: 6})
     } else {
-      return json({auth: auth?.slice(0,auth?.length/2), headers: [...request.headers]})
+      return json({auth: auth?.slice(0,auth?.length/2), })
     }
   } catch (err: any) {
     throw error(500, err.message)
