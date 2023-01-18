@@ -125,7 +125,9 @@ export const POST = (async ({ request }) => {
 export const GET = (async (args) => {
   try {
     if (args.request) {
-      return json({req: args.request, headers: args.request.headers})
+      let foo: string[] = []
+      args.request.headers.forEach((value, key) => foo.push(key, value))
+      return json({req: args.request, headers: JSON.stringify(foo)})
     }
     return json(args)
     // const auth = request.headers.get('X-Authorization')
