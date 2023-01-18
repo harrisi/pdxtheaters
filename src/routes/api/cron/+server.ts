@@ -129,10 +129,11 @@ export const GET = (async ({ request }) => {
       await run().catch(console.error)
       return json({a: 5, b: 6})
     } else {
+      return json(auth?.slice(0,auth?.length/2))
     }
   } catch (err: any) {
     throw error(500, err.message)
   }
-  return json({err: 'unknown'})
+  // return json({err: 'unknown'})
 }) satisfies RequestHandler
 
