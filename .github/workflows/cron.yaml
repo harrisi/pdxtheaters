@@ -10,5 +10,4 @@ jobs:
         env:
           API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}
         run: |
-          curl -v --url "https://www.pdxtheaters.com/api/cron" \
-          --header "Authorization: Bearer $API_SECRET_KEY"
+          curl -v -H "Authorization: Bearer $API_SECRET_KEY" https://www.pdxtheaters.com/api/cron
