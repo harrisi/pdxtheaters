@@ -124,7 +124,9 @@ export const POST = (async ({ request }) => {
 
 export const GET = (async (args) => {
   try {
-    if (args.request) return json(args.request)
+    if (args.request) {
+      return json({req: args.request, headers: args.request.headers})
+    }
     return json(args)
     // const auth = request.headers.get('X-Authorization')
     // if (auth === `Bearer ${API_SECRET_KEY}`) {
