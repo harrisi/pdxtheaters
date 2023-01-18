@@ -124,8 +124,8 @@ export const POST = (async ({ request }) => {
 
 export const GET = (async (event) => {
   try {
-    const auth = event.request.headers.get('Authorization')
-    if (auth === `Bearer ${API_SECRET_KEY}`) {
+    const auth = event.request.headers.get('X-Secret')
+    if (auth === `Secret ${API_SECRET_KEY}`) {
       await run().catch(console.error)
       return json({a: 5, b: 6})
     } else {
