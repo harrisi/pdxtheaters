@@ -1,6 +1,6 @@
 import { json, error } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
-import { API_SECRET_KEY, MONGODB_URI } from '$env/static/private'
+import { MONGODB_URI } from '$env/static/private'
 import { MongoClient } from 'mongodb'
 import { JSDOM } from 'jsdom'
 
@@ -124,14 +124,12 @@ export const POST = (async ({ request }) => {
 
 export const GET = (async (event) => {
   try {
-    const auth = event.request.headers.get('X-Secret')
-    if (auth === `Secret ${API_SECRET_KEY}`) {
-      await run().catch(console.error)
-      return json({a: 5, b: 6})
+    let now = new Date()
+    if (now.getHours() === 5 && now.getMinutes() >= 10 && now.getMinutes() <= 20) {
+      run().catch(e => { throw error(500, e) })
+      return json({ok: 200})
     } else {
-      let foo: string[] = []
-      event.request.headers.forEach((value, key) => foo.push(key, value))
-      return json({req: event.request, headers: JSON.stringify(foo)})
+      return json(event.request.headers)
     }
   } catch (err: any) {
     throw error(500, err.message)

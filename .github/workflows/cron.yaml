@@ -1,13 +1,11 @@
 name: daily-cron
-on: workflow_dispatch
-  #schedule:
-  #  - cron: '13 13 * * *'
+on:
+  schedule:
+    - cron: '13 13 * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
       - name: Get showtimes
-        env:
-          API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}
         run: |
-          curl -v -H "X-Secret: Secret $API_SECRET_KEY" https://www.pdxtheaters.com/api/cron
+          curl -LSs https://pdxtheaters.com/api/cron
