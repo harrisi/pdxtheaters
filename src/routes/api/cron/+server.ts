@@ -122,21 +122,17 @@ export const POST = (async ({ request }) => {
   return json({a: 1, b: 2, c: foo})
 }) satisfies RequestHandler
 
-export const GET = (async (args) => {
+export const GET = (async (event) => {
   try {
-    if (args.request) {
+    const auth = event.request.headers.get('Authorization')
+    if (auth === `Bearer ${API_SECRET_KEY}`) {
+      await run().catch(console.error)
+      return json({a: 5, b: 6})
+    } else {
       let foo: string[] = []
-      args.request.headers.forEach((value, key) => foo.push(key, value))
-      return json({req: args.request, headers: JSON.stringify(foo)})
+      event.request.headers.forEach((value, key) => foo.push(key, value))
+      return json({req: event.request, headers: JSON.stringify(foo)})
     }
-    return json(args)
-    // const auth = request.headers.get('X-Authorization')
-    // if (auth === `Bearer ${API_SECRET_KEY}`) {
-    //   await run().catch(console.error)
-    //   return json({a: 5, b: 6})
-    // } else {
-    //   return json({auth: auth?.slice(0,auth?.length/2), })
-    // }
   } catch (err: any) {
     throw error(500, err.message)
   }
