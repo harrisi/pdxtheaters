@@ -122,14 +122,14 @@ export const POST = (async ({ request }) => {
   return json({a: 1, b: 2, c: foo})
 }) satisfies RequestHandler
 
-export const GET = (async (event) => {
+export const GET = (async () => {
   try {
     let now = new Date()
     if (now.getHours() === 5 && now.getMinutes() >= 10 && now.getMinutes() <= 20) {
       run().catch(e => { throw error(500, e) })
       return json({ok: 200})
     } else {
-      return json(event.request.headers)
+      throw new Error(now.toString())
     }
   } catch (err: any) {
     throw error(500, err.message)
