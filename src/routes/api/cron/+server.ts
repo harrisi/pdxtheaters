@@ -125,7 +125,7 @@ export const POST = (async ({ request }) => {
 export const GET = (async () => {
   try {
     let now = new Date()
-    if (now.getHours() === 5 && now.getMinutes() >= 10 && now.getMinutes() <= 20) {
+    if (now.getHours() === 13 && now.getMinutes() >= 10 && now.getMinutes() <= 30) {
       run().catch(e => { throw error(500, e) })
       return json({ok: 200})
     } else {
