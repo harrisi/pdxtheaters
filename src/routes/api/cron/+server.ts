@@ -19,8 +19,11 @@ const theaters: Theater[] = [
     name: 'Moreland',
     //url: 'http://morelandtheater.com',
     url: 'https://697452.formovietickets.com:2235',
-    titleSelector: 'a.displaytitle',
-    showtimeSelector: 'td.rightcol',
+    // titleSelector: '#Table2 > tbody > tr > td.rightcol > b:nth-child(5)',
+    titleSelector: (document: Document) => {
+      return document.querySelector('#Table2 > tbody > tr > td.rightcol > b:nth-child(5)')?.innerHTML.split('<br>')[0]
+    },
+    showtimeSelector: '#Table2 > tbody > tr > td.rightcol > a',
     // showtimeSelectorFn: (t: string) => {
     //   let match = t.match(/\d+:\d+[ap]/)
     //   return match ? match[0] : ''
@@ -65,9 +68,18 @@ interface Showing {
 }
 
 async function run() {
+  let res = 0
+
   try {
+    await client.connect()
+
+    // should be narrowed?
+    const database = client.db('previewDB')
+
+    let collection = database.collection<Showing>(today)
+
     for (let theater of theaters) {
-      fetch(theater.url)
+      await fetch(theater.url)
       .then(response => response.text())
       .then(html => {
         const dom = new JSDOM(html)
@@ -99,14 +111,8 @@ async function run() {
       })
       // this is really silly. shouldn't be opening a new connection and inserting one by one.
       .then(async doc => {
-        await client.connect()
-
-        // should be narrowed?
-        const database = client.db('previewDB')
-
-        let collection = database.collection<Showing>(today)
-
-        collection.insertOne(doc)
+        await collection.insertOne(doc)
+        res++
       })
       .catch(console.error)
     }
@@ -114,6 +120,8 @@ async function run() {
   } finally {
     await client.close()
   }
+
+  return res
 }
 
 export const POST = (async ({ request }) => {
@@ -125,12 +133,12 @@ export const POST = (async ({ request }) => {
 export const GET = (async () => {
   try {
     let now = new Date()
-    if (now.getHours() === 13 && now.getMinutes() >= 10 && now.getMinutes() <= 30) {
-      await run().catch(e => { throw error(500, e) })
-      return json({ok: 200})
-    } else {
-      throw new Error(now.toString())
-    }
+    //if (now.getHours() === 13 && now.getMinutes() >= 10 && now.getMinutes() <= 30) {
+      let res = await run().catch(e => { throw error(500, e) })
+      return json({ ok: 200, res })
+    // } else {
+    //   throw new Error(now.toString())
+    // }
   } catch (err: any) {
     throw error(500, err.message)
   }
