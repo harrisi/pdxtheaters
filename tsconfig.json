@@ -1,4 +1,5 @@
 {
+  // this allows for SvelteKit-generated types in ./$types
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
 		"allowJs": true,
