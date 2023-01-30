@@ -13,7 +13,7 @@ const config = {
     // I like this, I think, but db/ should be in ./src/lib/server/
     // https://kit.svelte.dev/docs/server-only-modules
     alias: {
-      $db: './src/db',
+      $db: './src/lib/server/db',
     },
 	}
 };
