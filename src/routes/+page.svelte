@@ -23,6 +23,18 @@
 </script>
 
 <!-- this needs to be changed. -->
+<div>
+  <p>
+    data.todayEnd
+    <br />
+    {data.todayEnd}
+  </p>
+  <p>
+    data.newDate
+    <br />
+    {data.newDate}
+  </p>
+</div>
 
 <List>
   {#each screenings as screening}

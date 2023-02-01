@@ -50,5 +50,7 @@ export const load: PageServerLoad = async () => {
   // parents as well.
   return {
     screenings: data,
+    newDate: new Date(),
+    todayEnd,
   }
 }
