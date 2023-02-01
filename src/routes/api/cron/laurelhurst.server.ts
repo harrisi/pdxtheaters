@@ -70,7 +70,7 @@ export async function laurelhurst() {
           let curNode = movieAndShowtimeNodes[i]
 
           if (curNode.nodeName === 'B') {
-            curMovie.movie = ((curNode as HTMLElement).innerText || '').split('\n')[0]
+            curMovie.movie = ((curNode as HTMLElement).innerHTML || '').split('<br>')[0]
             i++
             do {
               let a = movieAndShowtimeNodes[i++] as HTMLAnchorElement
