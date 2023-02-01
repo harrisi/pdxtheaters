@@ -5,7 +5,8 @@ import type { PageServerLoad } from './$types'
 // this is where the data prop in ./+page.svelte is populated
 export const load: PageServerLoad = async () => {
   let todayEnd = new Date()
-  todayEnd.setHours(23, 59, 59, 999)
+  todayEnd.setHours(23+8, 59, 59, 999)
+
 
   const pipeline = [
     {
