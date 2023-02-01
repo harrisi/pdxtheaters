@@ -26,7 +26,7 @@
 
 <List>
   {#each screenings as screening}
-    <dt>{screening.showtimes.time.toLocaleTimeString('en-US', { timeStyle: 'short' })}</dt>
+    <dt>{screening.showtimes.time.toLocaleTimeString('en-US', { timeStyle: 'short', timeZone: 'America/Los_Angeles' })}</dt>
     <!--    <dt>{`${screening.showtimes.time.getHours()}:${screening.showtimes.time.getMinutes().toString().padStart(2, '0')}`}</dt> -->
     <Showtime title={screening.movie} theater={screening.theater} />
   {/each}
