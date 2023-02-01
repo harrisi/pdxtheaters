@@ -3,6 +3,7 @@ import type { RequestHandler } from './$types'
 import { screenings } from '$db/screenings'
 import { JSDOM } from 'jsdom'
 import { moreland } from './moreland.server'
+import { laurelhurst } from './laurelhurst.server'
 
 interface Theater {
   name: string,
@@ -126,7 +127,10 @@ async function run() {
 
 export const GET = (async () => {
   try {
-    let res = await moreland().catch(e => { throw error(500, e) })
+    let res = await Promise.all([
+      moreland().catch(e => { throw error(500, e) }),
+      laurelhurst().catch(e => { throw error(500, e) }),
+    ])
     // should return something better
     return json({ ok: 200, res })
   } catch (err: any) {

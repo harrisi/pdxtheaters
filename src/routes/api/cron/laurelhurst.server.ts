@@ -2,14 +2,14 @@ import { screenings } from '$db/screenings'
 import { JSDOM } from 'jsdom'
 import { parseTime } from '$lib/util'
 
-export async function moreland() {
+export async function laurelhurst() {
   try {
-    let theater = 'Moreland'
-    let url = 'https://697452.formovietickets.com:2235'
+    let theater = 'Laurelhurst'
+    let url = 'https://3677.formovietickets.com:2235'
 
     let doc: Document = await fetch(url).then(res => res.text()).then(html => { return new JSDOM(html).window.document })
 
-    let dateNodes = doc.querySelector('#Table2 > tbody > tr > td.rightcol > form > select') as HTMLSelectElement
+    let dateNodes = doc.querySelector('td.rightcol > form > select') as HTMLSelectElement
 
     let paths = []
 
@@ -38,11 +38,14 @@ export async function moreland() {
         rightcol?.forEach((el, i) => (el.nodeName === 'FORM') ? startOfMoviesIndex = i : null)
 
         // consume iterator
-        let movieAndShowtimeNodes: ChildNode[] = []
+        let movieAndShowtimeNodes: Node[] = []
         for (let [k, v] of rightcol?.entries() ?? []) {
-          if (k <= 3) continue
-          if (v.nodeName === 'A' || v.nodeName === 'B')
-            movieAndShowtimeNodes.push(v)
+          if (k < 3) continue
+          if (v.nodeName === 'B') movieAndShowtimeNodes.push(v)
+          if (v.nodeName === 'DIV') {
+            let divas: NodeList = (v as HTMLDivElement).querySelectorAll('a.showtime')
+            divas.forEach(v => movieAndShowtimeNodes.push(v))
+          }
         }
 
         // movieAndShowtimeNodes = movieAndShowtimeNodes.slice(startOfMoviesIndex)
