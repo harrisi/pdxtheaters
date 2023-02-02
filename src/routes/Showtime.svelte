@@ -25,7 +25,7 @@
     font: bold 20px/45px Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0 0 0 12px;
-    white-space: nowrap;
+    overflow-wrap: break-word;
   }
 
   .title {
