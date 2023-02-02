@@ -1,12 +1,10 @@
 import { screenings } from '$db/screenings'
 // N.B. PageServerLoad instead of PageLoad.
 import type { PageServerLoad } from './$types'
+import dayjs from 'dayjs'
 
 // this is where the data prop in ./+page.svelte is populated
 export const load: PageServerLoad = async () => {
-  let todayEnd = new Date()
-  todayEnd.setHours(23+8, 59, 59, 999)
-
 
   const pipeline = [
     {
@@ -18,8 +16,8 @@ export const load: PageServerLoad = async () => {
       $match: {
         'showtimes.time': {
           // this will be new Date().setHours(0, 0, 0, 0) for future dates
-          $gte: new Date(),
-          $lte: todayEnd,
+          $gte: dayjs().toDate(),
+          $lte: dayjs().endOf('day').toDate(),
         },
       },
     },
@@ -51,7 +49,5 @@ export const load: PageServerLoad = async () => {
   // parents as well.
   return {
     screenings: data,
-    newDate: new Date(),
-    todayEnd,
   }
 }

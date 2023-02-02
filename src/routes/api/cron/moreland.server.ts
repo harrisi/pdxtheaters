@@ -1,6 +1,7 @@
 import { screenings } from '$db/screenings'
 import { JSDOM } from 'jsdom'
 import { parseTime } from '$lib/util'
+import dayjs from 'dayjs'
 
 export async function moreland() {
   try {
@@ -71,10 +72,9 @@ export async function moreland() {
             i++
             do {
               let a = movieAndShowtimeNodes[i++] as HTMLAnchorElement
-              let time = parseTime(a.textContent || '') || new Date(0)
+              let time = parseTime(a.textContent || '') || dayjs().toDate()
               // lol
-              let curNodeDate = new Date(`${u.slice(-8,-4)}-${u.slice(-4,-2)}-${u.slice(-2)}`)
-              time.setDate(curNodeDate.getUTCDate())
+              time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date')).toDate()
               curMovie.showtimes.push({
                 time,
                 // this is frustrating. Since I'm gathering the data in the iframe, the url is to
