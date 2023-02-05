@@ -14,6 +14,7 @@ const config = {
     // https://kit.svelte.dev/docs/server-only-modules
     alias: {
       $db: './src/lib/server/db',
+      $component: './src/lib/components',
     },
 	}
 };
