@@ -4,6 +4,7 @@ import { screenings } from '$db/screenings'
 import { JSDOM } from 'jsdom'
 import { moreland } from './moreland.server'
 import { laurelhurst } from './laurelhurst.server'
+import { studioone } from './studioone.server'
 
 interface Theater {
   name: string,
@@ -112,7 +113,8 @@ async function run() {
       })
       // this is really silly. shouldn't be opening a new connection and inserting one by one.
       .then(async doc => {
-        await screenings.insertOne(doc)
+        await screenings.insert(doc)
+        // await screenings.insertOne(doc)
         res++
       })
         .catch(console.error)
@@ -130,6 +132,7 @@ export const GET = (async () => {
     let res = await Promise.all([
       moreland().catch(e => { throw error(500, e) }),
       laurelhurst().catch(e => { throw error(500, e) }),
+      studioone().catch(e => { throw error(500, e) }),
     ])
     // should return something better
     return json({ ok: 200, res })

@@ -7,7 +7,7 @@ function parseTime(str: string) {
   if (!str) return
   str = str.toLowerCase()
   if (!str.match(/m$/i)) str += 'm'
-  return dayjs(str, 'hh:mma').toDate()
+  return dayjs(str, 'hh:mma')
 }
 
 export { parseTime }

@@ -2,6 +2,11 @@ import { screenings } from '$db/screenings'
 import { JSDOM } from 'jsdom'
 import { parseTime } from '$lib/util'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export async function moreland() {
   try {
@@ -53,38 +58,40 @@ export async function moreland() {
         for (let i = 0; i < movieAndShowtimeNodes.length; ) {
           // obviously this should be a type
           let curMovie = {
-            theater,
-            movie: '',
-            showtimes: [
-              {
-                time: new Date(),
-                url: '',
-              },
-            ],
+            theater_name: theater,
+            movie_title: '',
+            showtime: dayjs().toISOString(),
+            //url: '',
           }
 
-          // wow dumb
-          curMovie.showtimes.pop()
           let curNode = movieAndShowtimeNodes[i]
 
           if (curNode.nodeName === 'B') {
-            curMovie.movie = ((curNode as HTMLElement).textContent || '').split('\n')[0]
+            let movie_title = ((curNode as HTMLElement).textContent || '').split('\n')[0]
             i++
             do {
               let a = movieAndShowtimeNodes[i++] as HTMLAnchorElement
               let time = parseTime(a.textContent || '') || dayjs().toDate()
               // lol
-              time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date')).toDate()
-              curMovie.showtimes.push({
-                time,
-                // this is frustrating. Since I'm gathering the data in the iframe, the url is to
-                // the iframe source, when I want it to go to morelandtheater.com. I don't think
-                // there is a solution. Oh well.
-                // also, I'm stripping the RtsPurchaseId because I can imagine that causing problems somehow.
-                url: `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`,
-              })
+              time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date'))
+              curMovie.showtime = time.tz('America/Los_Angeles').toISOString()
+              // curMovie.url = `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`
+              // curMovie.showtimes.push({
+              //   time,
+              //   // this is frustrating. Since I'm gathering the data in the iframe, the url is to
+              //   // the iframe source, when I want it to go to morelandtheater.com. I don't think
+              //   // there is a solution. Oh well.
+              //   // also, I'm stripping the RtsPurchaseId because I can imagine that causing problems somehow.
+              //   url: `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`,
+              // })
+              curMovie.movie_title = movie_title
+              movieAndShowtimes.push(curMovie)
+              curMovie = {
+                theater_name: theater,
+                movie_title: movie_title,
+                showtime: dayjs().toISOString(),
+              }
             } while (i < movieAndShowtimeNodes.length && movieAndShowtimeNodes[i].nodeName === 'A')
-            movieAndShowtimes.push(curMovie)
           } else {
             i++
           }
@@ -103,7 +110,8 @@ export async function moreland() {
         // await screenings.find({
         // })
         // this should check if the documents already exist.
-        await screenings.insertMany(toBeInserted)
+        await screenings.insert(toBeInserted)// .select().then(console.log)
+        // await screenings.insertMany(toBeInserted)
       }).catch(e => {
         console.error(e)
       })

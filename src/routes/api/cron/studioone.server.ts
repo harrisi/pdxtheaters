@@ -4,18 +4,21 @@ import { parseTime } from '$lib/util'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+// import { readFile } from 'fs/promises'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export async function laurelhurst() {
+export async function studioone() {
   try {
-    let theater = 'Laurelhurst'
-    let url = 'https://3677.formovietickets.com:2235'
+    let theater = 'Studio One'
+    let url = 'https://895645.formovietickets.com:2235'
 
     let doc: Document = await fetch(url).then(res => res.text()).then(html => { return new JSDOM(html).window.document })
 
-    let dateNodes = doc.querySelector('td.rightcol > form > select') as HTMLSelectElement
+    // let doc: Document = await readFile('./src/routes/api/cron/studioone').then(buf => new JSDOM(buf).window.document)
+
+    let dateNodes = doc.querySelector('#schedule > table > tbody > tr > td.rightcol > form > select') as HTMLSelectElement
 
     let paths = []
 
@@ -44,13 +47,18 @@ export async function laurelhurst() {
         rightcol?.forEach((el, i) => (el.nodeName === 'FORM') ? startOfMoviesIndex = i : null)
 
         // consume iterator
-        let movieAndShowtimeNodes: Node[] = []
+        let movieAndShowtimeNodes: ChildNode[] = []
         for (let [k, v] of rightcol?.entries() ?? []) {
-          if (k < 3) continue
-          if (v.nodeName === 'B') movieAndShowtimeNodes.push(v)
-          if (v.nodeName === 'DIV') {
-            let divas: NodeList = (v as HTMLDivElement).querySelectorAll('a.showtime')
-            divas.forEach(v => movieAndShowtimeNodes.push(v))
+          if (k <= 2) continue
+          if (v.nodeName === 'B') {
+            // @ts-ignore
+            movieAndShowtimeNodes.push(v.firstChild)
+          } else if (v.nodeName === 'DIV') {
+            v.firstChild?.childNodes.forEach(el => {
+              if (el.nodeName === 'A') {
+                movieAndShowtimeNodes.push(el)
+              }
+            })
           }
         }
 
@@ -63,35 +71,46 @@ export async function laurelhurst() {
           let curMovie = {
             theater_name: theater,
             movie_title: '',
-            showtime: dayjs().tz('America/Los_Angeles').toISOString(),
-            // url: '',
+            showtime: dayjs().toISOString(),
+            //url: '',
           }
 
           let curNode = movieAndShowtimeNodes[i]
 
-          if (curNode.nodeName === 'B') {
-            let movie_title = ((curNode as HTMLElement).innerHTML || '').split('<br>')[0]
-            curMovie.movie_title = movie_title
+          if ((curNode as HTMLAnchorElement).className == 'displaytitle' || curNode.nodeName == '#text') {
+            let movie_title = ((curNode as HTMLElement).textContent || '').replace(/^21 \+/, '').split('\n')[0]
+            let curSoldOut = curNode.nodeName == '#text'
             i++
             do {
-              let a = movieAndShowtimeNodes[i++] as HTMLAnchorElement
-              let time = parseTime(a.textContent || '') || dayjs().toDate()
+              let el
+              let time
+              if (curSoldOut) {
+                el = movieAndShowtimeNodes[i++] as HTMLElement
+                time = parseTime(el.textContent?.replace(/[^\d:apm]/i, '') || '') || dayjs().toDate()
+              } else {
+                el = movieAndShowtimeNodes[i++] as HTMLAnchorElement
+                time = parseTime(el.textContent || '') || dayjs().toDate()
+              }
               // lol
-              time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date')).toDate()
-              curMovie.showtime = time.toISOString()
-                // this is frustrating. Since I'm gathering the data in the iframe, the url is to
-                // the iframe source, when I want it to go to morelandtheater.com. I don't think
-                // there is a solution. Oh well.
-                // also, I'm stripping the RtsPurchaseId because I can imagine that causing problems somehow.
-              // curMovie.url = `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`,
+              time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date'))
+              curMovie.showtime = time.tz('America/Los_Angeles').toISOString()
+              // curMovie.url = `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`
+              // curMovie.showtimes.push({
+              //   time,
+              //   // this is frustrating. Since I'm gathering the data in the iframe, the url is to
+              //   // the iframe source, when I want it to go to morelandtheater.com. I don't think
+              //   // there is a solution. Oh well.
+              //   // also, I'm stripping the RtsPurchaseId because I can imagine that causing problems somehow.
+              //   url: `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`,
+              // })
+              curMovie.movie_title = movie_title
               movieAndShowtimes.push(curMovie)
               curMovie = {
                 theater_name: theater,
                 movie_title: movie_title,
                 showtime: dayjs().toISOString(),
               }
-
-            } while (i < movieAndShowtimeNodes.length && movieAndShowtimeNodes[i].nodeName === 'A')
+            } while (i < movieAndShowtimeNodes.length && (movieAndShowtimeNodes[i] as HTMLElement).className === 'showtime')
           } else {
             i++
           }
@@ -111,6 +130,7 @@ export async function laurelhurst() {
         // })
         // this should check if the documents already exist.
         await screenings.insert(toBeInserted)
+        // await screenings.insertMany(toBeInserted)
       }).catch(e => {
         console.error(e)
       })
