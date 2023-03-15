@@ -19,6 +19,7 @@
 
   let dtFormat = 'YYYY-MM-DD HH:mm';
 
+  console.log('from search', dayjs().format('YYYY-MM-DD HH:mm'))
   // ?
   let searchStart = dayjs().format(dtFormat);
   let searchEnd = dayjs().endOf('day').format(dtFormat);
