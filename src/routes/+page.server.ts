@@ -6,6 +6,9 @@ import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
 import { supabase } from '$db/supabase';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 // export const actions = {
 //   default: async ({ request }) => {
 //     const data = await request.formData();
