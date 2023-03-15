@@ -22,8 +22,8 @@ import { supabase } from '$db/supabase';
 export const load: PageServerLoad = async ({ url }) => {
   let q = `%${url.searchParams.get('q') ?? ''}`
   q = q.endsWith('%') ? q : q + '%'
-  const ds = url.searchParams.get('ds') ?? dayjs().format('YYYY-MM-DD HH:mm')
-  const de = url.searchParams.get('de') ?? dayjs().endOf('day').format('YYYY-MM-DD HH:mm')
+  const ds = url.searchParams.get('ds') ?? dayjs().tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm')
+  const de = url.searchParams.get('de') ?? dayjs().tz('America/Los_Angeles').endOf('day').format('YYYY-MM-DD HH:mm')
   const o = url.searchParams.get('o') ?? 'showtime'
 
   console.log(q)
