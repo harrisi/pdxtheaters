@@ -6,10 +6,6 @@ import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
 import { supabase } from '$db/supabase';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('America/Los_Angeles');
-
 // export const actions = {
 //   default: async ({ request }) => {
 //     const data = await request.formData();
@@ -26,8 +22,8 @@ dayjs.tz.setDefault('America/Los_Angeles');
 export const load: PageServerLoad = async ({ url }) => {
   let q = `%${url.searchParams.get('q') ?? ''}`
   q = q.endsWith('%') ? q : q + '%'
-  const ds = url.searchParams.get('ds') ?? dayjs().format()
-  const de = url.searchParams.get('de') ?? dayjs().endOf('day').format()
+  const ds = url.searchParams.get('ds') ?? dayjs().format('YYYY-MM-DD HH:mm')
+  const de = url.searchParams.get('de') ?? dayjs().endOf('day').format('YYYY-MM-DD HH:mm')
   const o = url.searchParams.get('o') ?? 'showtime'
 
   console.log(q)
