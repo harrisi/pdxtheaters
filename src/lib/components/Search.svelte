@@ -23,6 +23,10 @@
   // ?
   let searchStart = dayjs().format(dtFormat);
   let searchEnd = dayjs().endOf('day').format(dtFormat);
+
+  function dsChange(e) {
+    searchEnd = dayjs(e.target.value).endOf('day').format(dtFormat);
+  }
 </script>
 
 <div>
@@ -33,7 +37,7 @@
       type="search"
       id="search"
       name="q"
-      placeholder="What or where to watch?"
+      placeholder="What to watch?"
     />
     <!-- this input type wasn't supported by iOS until JANUARY 22 2023. That was ten days ago.
     it's been supported by Opera since 2011. To be fair, FireFox didn't support it until 2021.
@@ -41,13 +45,16 @@
     the best option. I've noticed a number of the theater sites have tabs for the next few days.
     I think that might be nice. I don't know. I'll have to play around with it.
     -->
+
     <input
       type="datetime-local"
       id="searchStart"
       name="ds"
       bind:value={searchStart}
       min={dayjs().format(dtFormat)}
+      on:change={dsChange}
     />
+
     <!-- I don't know if the min will work like this but searchEnd needs to be >= searchStart. -->
     <input
       type="datetime-local"
@@ -56,6 +63,7 @@
       bind:value={searchEnd}
       min={searchStart}
     />
+
     <select name="o">
       <option value="time.ascending">Time (now -&gt; later)</option>
       <option value="time.descending">Time (later -&gt; now)</option>
@@ -63,6 +71,7 @@
       <option value="theater">Theater distance</option>
       <!-- <option value='??'>??</option> -->
     </select>
+
     <!-- this is obviously dumb but I'm not sure how I'd want to handle it.
     there are a lot of options for this, and it might involve cookies.
     -->
