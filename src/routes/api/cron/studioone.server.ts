@@ -80,7 +80,7 @@ export async function studioone() {
             let curMovie = {
               theater_name: theater,
               movie_title: '',
-              showtime: dayjs().format('YYYY-MM-DD HH:mm:ssZ'),
+              showtime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
               //url: '',
             };
 
@@ -112,7 +112,7 @@ export async function studioone() {
                 // lol
                 time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date'));
                 curMovie.showtime = time
-                  .format('YYYY-MM-DD HH:mm:ssZ');
+                  .format('YYYY-MM-DD HH:mm:ss');
                 // curMovie.url = `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`
                 // curMovie.showtimes.push({
                 //   time,
@@ -127,7 +127,7 @@ export async function studioone() {
                 curMovie = {
                   theater_name: theater,
                   movie_title: movie_title,
-                  showtime: dayjs().format('YYYY-MM-DD HH:mm:ssZ'),
+                  showtime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
                 };
               } while (
                 i < movieAndShowtimeNodes.length &&

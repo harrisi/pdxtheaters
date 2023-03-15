@@ -17,7 +17,7 @@
   export let dateStart = dayjs();
   export let dateEnd = dayjs().endOf('day');
 
-  let dtFormat = 'YYYY-MM-DDTHH:mm';
+  let dtFormat = 'YYYY-MM-DD HH:mm';
 
   // ?
   let searchStart = dayjs().format(dtFormat);
