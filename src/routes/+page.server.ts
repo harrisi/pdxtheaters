@@ -4,6 +4,7 @@ import type { PageServerLoad, Actions } from './$types';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
+import { supabase } from '$db/supabase';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -29,59 +30,20 @@ export const load: PageServerLoad = async ({ url }) => {
   const de = url.searchParams.get('de') ?? dayjs().endOf('day').format()
   const o = url.searchParams.get('o') ?? 'showtime'
 
-  const res = await screenings
+  console.log(q)
+  console.log(ds)
+  console.log(de)
+
+  const res = await supabase.from('screenings')
     .select()
     .gte('showtime', ds)
     .lte('showtime', de)
-    .ilike('movie', q)
-    .order(o);
+    //.ilike('movie', q)
+    .order('showtime');
+
 
   return {
     screenings: res.data,
   };
 
-  // const pipeline = [
-  //   {
-  //     // the $ is necessary here because.. I'm not really sure.
-  //     // I guess just because it's not a key?
-  //     $unwind: '$showtimes',
-  //   },
-  //   {
-  //     $match: {
-  //       'showtimes.time': {
-  //         // this will be new Date().setHours(0, 0, 0, 0) for future dates
-  //         $gte: dayjs().toDate(),
-  //         $lte: dayjs().endOf('day').toDate(),
-  //       },
-  //     },
-  //   },
-  //   // {
-  //   //   $group: {
-  //   //     // I definitely might want to group by something else.
-  //   //     _id: 'theater',
-  //   //   },
-  //   // },
-  //   {
-  //     $sort: {
-  //       'showtimes.time': 1,
-  //     },
-  //   },
-  //   {
-  //     $project: {
-  //       _id: 0,
-  //       movie: 1,
-  //       theater: 1,
-  //       showtimes: 1,
-  //     },
-  //   },
-  // ]
-
-  // const data = await screenings.aggregate(pipeline).toArray()
-
-  // // `data` in ./+page.svelte is this object.
-  // // technically, apparently, it also includes data from all of its
-  // // parents as well.
-  // return {
-  //   screenings: data,
-  // }
 };

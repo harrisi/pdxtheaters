@@ -25,6 +25,7 @@
   // let screenings: Showing[]
   $: ({ screenings } = data ?? [])
 
+  console.log('from page', dayjs().format('YYYY-MM-DD HH:mm:ssZ'))
   // interface Showing {
   //   theater: string,
   //   movie: string,
