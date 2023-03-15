@@ -18,6 +18,10 @@ export async function laurelhurst() {
       .then((res) => res.text())
       .then((html) => {
         return new JSDOM(html).window.document;
+      })
+      .catch(e => {
+        console.error(e)
+        return
       });
 
     const dateNodes = doc.querySelector(

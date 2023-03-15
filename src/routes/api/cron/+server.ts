@@ -142,15 +142,15 @@ async function run() {
 export const GET = (async () => {
   try {
     let res = await Promise.all([
-      // moreland().catch((e) => {
-      //   throw error(500, e);
-      // }),
+      moreland().catch((e) => {
+        throw error(500, e);
+      }),
       laurelhurst().catch((e) => {
         throw error(500, e);
       }),
-      // studioone().catch((e) => {
-      //   throw error(500, e);
-      // }),
+      studioone().catch((e) => {
+        throw error(500, e);
+      }),
     ]);
     // should return something better
     return json({ ok: 200, res });
