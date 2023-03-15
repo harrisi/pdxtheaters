@@ -92,7 +92,7 @@ export async function laurelhurst() {
                 // lol
                 time = dayjs(time)
                   .set('date', dayjs(u.slice(-8)).get('date'))
-                curMovie.showtime = time.format('YYYY-MM-DD HH:mm:ss');
+                curMovie.showtime = time.format('YYYY-MM-DD HH:mm');
                 // this is frustrating. Since I'm gathering the data in the iframe, the url is to
                 // the iframe source, when I want it to go to morelandtheater.com. I don't think
                 // there is a solution. Oh well.
@@ -102,7 +102,7 @@ export async function laurelhurst() {
                 curMovie = {
                   theater_name: theater,
                   movie_title: movie_title,
-                  showtime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+                  showtime: dayjs().format('YYYY-MM-DD HH:mm'),
                 };
               } while (
                 i < movieAndShowtimeNodes.length &&

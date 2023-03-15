@@ -37,7 +37,7 @@ export const load: PageServerLoad = async ({ url }) => {
     .select()
     .gte('showtime', ds)
     .lte('showtime', de)
-    //.ilike('movie', q)
+    .ilike('movie_title', q)
     .order('showtime');
 
 
