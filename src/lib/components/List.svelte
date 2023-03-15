@@ -1,10 +1,9 @@
-<script>  
-
+<script>
 </script>
 
 <dl>
   <div>
-    <slot></slot>
+    <slot />
   </div>
 </dl>
 

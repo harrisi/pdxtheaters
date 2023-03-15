@@ -1,43 +1,44 @@
-import { screenings } from '$db/screenings'
+import { screenings } from '$db/screenings';
 // N.B. PageServerLoad instead of PageLoad.
-import type { PageServerLoad, Actions } from './$types'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
-import dayjs from 'dayjs'
+import type { PageServerLoad, Actions } from './$types';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
 
-dayjs.extend(utc)
-dayjs.extend(timezone)
-dayjs.tz.setDefault('America/Los_Angeles')
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/Los_Angeles');
 
-export const actions = {
-  default: async event => {
-    let data = await event.request.formData()
-    let opts = {
-      searchText: '',
-      searchStart: '',
-      searchEnd: '',
-      searchSort: '',
-    }
-
-    for (let [k, v] of data.entries()) {
-      opts[k] = v
-    }
-
-    // event.locals = opts
-    return { success: true }
-  }
-} satisfies Actions
+// export const actions = {
+//   default: async ({ request }) => {
+//     const data = await request.formData();
+//     const searchText = data.get('q')
+//     const searchStart = data.get('ds')
+//     const searchEnd = data.get('de')
+//     const groupBy = data.get('g')
+// 
+//     return { success: true };
+//   },
+// } satisfies Actions;
 
 // this is where the data prop in ./+page.svelte is populated
-export const load: PageServerLoad = async (r) => {
-  let res = await screenings.select()
-    .gte('showtime', dayjs().toISOString())
-    .lte('showtime', dayjs().endOf('day').toISOString())
-    .order('showtime')
+export const load: PageServerLoad = async ({ url }) => {
+  let q = `%${url.searchParams.get('q') ?? ''}`
+  q = q.endsWith('%') ? q : q + '%'
+  const ds = url.searchParams.get('ds') ?? dayjs().format()
+  const de = url.searchParams.get('de') ?? dayjs().endOf('day').format()
+  const o = url.searchParams.get('o') ?? 'showtime'
+
+  const res = await screenings
+    .select()
+    .gte('showtime', ds)
+    .lte('showtime', de)
+    .ilike('movie', q)
+    .order(o);
 
   return {
-    screenings: res
-  }
+    screenings: res.data,
+  };
 
   // const pipeline = [
   //   {
@@ -83,4 +84,4 @@ export const load: PageServerLoad = async (r) => {
   // return {
   //   screenings: data,
   // }
-}
+};

@@ -1,6 +1,6 @@
-<script lang='ts'>
-  export let theater: string
-  export let title: string
+<script lang="ts">
+  export let theater: string;
+  export let title: string;
   // export let showtime: string
 
   // XXX: How do you share type from component to parent?
@@ -12,10 +12,10 @@
 </script>
 
 <dd>
-  <div class='title'>
+  <div class="title">
     {title}
   </div>
-  <div class='theater'>
+  <div class="theater">
     {theater}
   </div>
 </dd>

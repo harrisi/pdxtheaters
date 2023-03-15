@@ -1,16 +1,16 @@
-import { json, error } from '@sveltejs/kit'
-import type { RequestHandler } from './$types'
-import { screenings } from '$db/screenings'
-import { JSDOM } from 'jsdom'
-import { moreland } from './moreland.server'
-import { laurelhurst } from './laurelhurst.server'
-import { studioone } from './studioone.server'
+import { json, error } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+import { screenings } from '$db/screenings';
+import { JSDOM } from 'jsdom';
+import { moreland } from './moreland.server';
+import { laurelhurst } from './laurelhurst.server';
+import { studioone } from './studioone.server';
 
 interface Theater {
-  name: string,
-  url: string,
-  titleSelector: string | string[] | Function,
-  showtimeSelector: string | string[] | Function,
+  name: string;
+  url: string;
+  titleSelector: string | string[] | Function;
+  showtimeSelector: string | string[] | Function;
 }
 
 // these should probably be somewhere else
@@ -59,14 +59,14 @@ const theaters: Theater[] = [
   //     return doc.body.innerText
   //   },
   // },
-]
+];
 
 // can this try running other functions and stop after 10s, returning where in the list it stopped?
 // probably easier for now to just break it into multiple functions and call them all individually from GitHub.
 // I also think it might be easier to use edge functions. With that I think I can just asynchronously return
 // data from different functions?
 async function run() {
-  let res = 0
+  let res = 0;
 
   try {
     // await client.connect()
@@ -78,66 +78,83 @@ async function run() {
 
     for (let theater of theaters) {
       await fetch(theater.url)
-      .then(response => response.text())
-      .then(html => {
-        const dom = new JSDOM(html)
-        const { document } = dom.window
-        let movie: string = ''
-        let showtime: string = ''
+        .then((response) => response.text())
+        .then((html) => {
+          const dom = new JSDOM(html);
+          const { document } = dom.window;
+          let movie: string = '';
+          let showtime: string = '';
 
-        if (typeof theater.titleSelector === 'string') {
-          movie = document.querySelector(theater.titleSelector)?.innerHTML.trim() || ''
-        } else if (typeof theater.titleSelector === 'object' && theater.titleSelector.length) {
-          // bleh
-        } else if (typeof theater.titleSelector === 'function') {
-          movie = theater.titleSelector(document)
-        }
+          if (typeof theater.titleSelector === 'string') {
+            movie =
+              document.querySelector(theater.titleSelector)?.innerHTML.trim() ||
+              '';
+          } else if (
+            typeof theater.titleSelector === 'object' &&
+            theater.titleSelector.length
+          ) {
+            // bleh
+          } else if (typeof theater.titleSelector === 'function') {
+            movie = theater.titleSelector(document);
+          }
 
-        if (typeof theater.showtimeSelector === 'string') {
-          showtime = document.querySelector(theater.showtimeSelector)?.innerHTML.trim() || ''
-        } else if (typeof theater.showtimeSelector === 'object' && theater.showtimeSelector.length) {
-          // bleh
-        } else if (typeof theater.showtimeSelector === 'function') {
-          showtime = theater.showtimeSelector(document)
-        }
+          if (typeof theater.showtimeSelector === 'string') {
+            showtime =
+              document
+                .querySelector(theater.showtimeSelector)
+                ?.innerHTML.trim() || '';
+          } else if (
+            typeof theater.showtimeSelector === 'object' &&
+            theater.showtimeSelector.length
+          ) {
+            // bleh
+          } else if (typeof theater.showtimeSelector === 'function') {
+            showtime = theater.showtimeSelector(document);
+          }
 
-        let doc = {
-          theater: theater.name,
-          movie,
-          showtime,
-        }
+          let doc = {
+            theater: theater.name,
+            movie,
+            showtime,
+          };
 
-        console.log(`theater: ${theater.name}; movie: ${movie}; showtime: ${showtime}`)
+          console.log(
+            `theater: ${theater.name}; movie: ${movie}; showtime: ${showtime}`
+          );
 
-        return doc
-      })
-      // this is really silly. shouldn't be opening a new connection and inserting one by one.
-      .then(async doc => {
-        await screenings.insert(doc)
-        // await screenings.insertOne(doc)
-        res++
-      })
-        .catch(console.error)
+          return doc;
+        })
+        // this is really silly. shouldn't be opening a new connection and inserting one by one.
+        .then(async (doc) => {
+          await screenings.insert(doc);
+          // await screenings.insertOne(doc)
+          res++;
+        })
+        .catch(console.error);
     }
-
   } finally {
     // await client.close()
   }
 
-  return res
+  return res;
 }
 
 export const GET = (async () => {
   try {
     let res = await Promise.all([
-      moreland().catch(e => { throw error(500, e) }),
-      laurelhurst().catch(e => { throw error(500, e) }),
-      studioone().catch(e => { throw error(500, e) }),
-    ])
+      moreland().catch((e) => {
+        throw error(500, e);
+      }),
+      laurelhurst().catch((e) => {
+        throw error(500, e);
+      }),
+      studioone().catch((e) => {
+        throw error(500, e);
+      }),
+    ]);
     // should return something better
-    return json({ ok: 200, res })
+    return json({ ok: 200, res });
   } catch (err: any) {
-    throw error(500, err.message)
+    throw error(500, err.message);
   }
-}) satisfies RequestHandler
-
+}) satisfies RequestHandler;
