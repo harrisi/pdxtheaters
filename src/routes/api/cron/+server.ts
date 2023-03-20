@@ -7,6 +7,8 @@ import { laurelhurst } from './laurelhurst.server';
 import { studioone } from './studioone.server';
 import { cinema21 } from './cinema21.server'
 import { cinemagic } from './cinemagic.server'
+import { cst } from './cst.server'
+import { hollywood } from './hollywood.server'
 
 interface Theater {
   name: string;
@@ -157,6 +159,12 @@ export const GET = (async () => {
         throw error(500, e)
       }),
       cinemagic().catch(e => {
+        throw error(500, e)
+      }),
+      cst().catch(e => {
+        throw error(500, e)
+      }),
+      hollywood().catch(e => {
         throw error(500, e)
       }),
     ]);
