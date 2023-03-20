@@ -19,23 +19,24 @@
 
   let dtFormat = 'YYYY-MM-DD HH:mm';
 
+
+let form
+
   console.log('from search', dayjs().format('YYYY-MM-DD HH:mm'))
   // ?
   let searchStart = dayjs().format(dtFormat);
   let searchEnd = dayjs().endOf('day').format(dtFormat);
-
-  function dsChange(e) {
-    searchEnd = dayjs(e.target.value).endOf('day').format(dtFormat);
-  }
   function debounce(func, timeout = 300){
   let timer;
   return (...args) => {
     clearTimeout(timer);
     timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
-}
 
-let form
+}
+  function dsChange(e) {
+    searchEnd = dayjs(e.target.value).endOf('day').format(dtFormat);
+  }
 
 </script>
 
@@ -64,7 +65,7 @@ let form
       name="ds"
       bind:value={searchStart}
       min={dayjs().format(dtFormat)}
-      on:change={dsChange}
+      on:change={e => { dsChange(e); debounce(() => form.requestSubmit()) }}
     />
 
     <!-- I don't know if the min will work like this but searchEnd needs to be >= searchStart. -->
