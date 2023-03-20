@@ -122,10 +122,6 @@ async function run() {
             showtime,
           };
 
-          console.log(
-            `theater: ${theater.name}; movie: ${movie}; showtime: ${showtime}`
-          );
-
           return doc;
         })
         // this is really silly. shouldn't be opening a new connection and inserting one by one.
