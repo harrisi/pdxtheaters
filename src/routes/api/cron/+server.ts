@@ -5,6 +5,7 @@ import { JSDOM } from 'jsdom';
 import { moreland } from './moreland.server';
 import { laurelhurst } from './laurelhurst.server';
 import { studioone } from './studioone.server';
+import { cinema21 } from './cinema21.server'
 
 interface Theater {
   name: string;
@@ -151,6 +152,9 @@ export const GET = (async () => {
       studioone().catch((e) => {
         throw error(500, e);
       }),
+      cinema21().catch(e => {
+        throw error(500, e)
+      })
     ]);
     // should return something better
     return json({ ok: 200, res });

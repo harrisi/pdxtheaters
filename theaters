@@ -21,11 +21,6 @@ Oak Grove 8
 Joy Cinema
   - https://www.thejoycinema.com/index.html; I don't even know how to buy a ticket for myself.
 
-McMenamins Kennedy School
-  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/now-playing/;
-  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/coming-soon/;
-  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/view-by-date/;
-
 Living Room Theaters
   - https://pdx.livingroomtheaters.com/nowplaying;
   - https://pdx.livingroomtheaters.com/comingsoon;
@@ -39,52 +34,28 @@ Laurelhurst
   - https://www.laurelhursttheater.com/comingsoon;
 
 Studio One Theaters
-Regal Pioneer Place
-Regal Fox Tower
-Century Clackamas
-Cinemark (82nd)
-Wunderland Milwaukie
+  - done
+
 Academy Theater
 Clinton Street
 Avalon
 Empiracal
 5th Avenue
 Hollywood Theater
-Cinemark XD Clackamas Town Center
-Regal Hilltop
 Lake Theater
-McMenamins Bagdad
-McMenamins Misson Theater
 PAM CUT
-Regal Division Street
 Canby Cinema 8
 Aladdin Theater
-Regal Tigard
-Electric Castles Wunderland
-Regal Bridgeport
 Jubitz Cinema
 St. John's Twin Cinema
 Mt. Hood Theater
-AMC Mill Plain
-Regal Cascade
-Regal Stark Street
-Century 16 Cedar Hills
-Regal Wilsonville
-Regal City Center
-Regal Vancouver Plaza
-AMC Progress Ridge
 Kiggins Theater
 Liberty Theater
-Regal Evergreen
-AMC Vancouver Mall
-McMenamins St. John's
-Regal Movies On TV
-Regal Cinema 99
 Sandy Cinema
-McMenamins Power Station
-Wunderland
 Cornelius 10
 
+Century 16 Cedar Hills
+Century Clackamas
 Century 16 Eastport
   - cinemark.com/theatres/or-portland/century-16-eastport-plaza; document.querySelector("#\\39 0552").innerText; .showtimeMovieTimes
   - this will have multiple movies and showtimes so more work
@@ -92,3 +63,40 @@ Century 16 Eastport
 Regal Lloyd Center
   - regmovies.com/theatres/regal-lloyd-center-imax/0807#/buy-tickets-by-cinema?in-cinema=0807&at=2023-01-10&view-mode=list
   - document.querySelector("body > section.light.quickbook-section.npm-quickbook > section > div.qb.qb-by-cinema > section > div.container > div.row.movie-row.first-movie-row > div > div > div:nth-child(2) > div > div:nth-child(1) > a > h3")
+
+Regal Division Street
+Regal Hilltop
+Regal Pioneer Place
+Regal Fox Tower
+Regal Tigard
+Regal Cascade
+Regal Stark Street
+Regal Wilsonville
+Regal City Center
+Regal Vancouver Plaza
+Regal Evergreen
+Regal Movies On TV
+Regal Cinema 99
+Regal Bridgeport
+McMenamins St. John's
+McMenamins Bagdad
+McMenamins Misson Theater
+McMenamins Power Station
+McMenamins Kennedy School
+  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/now-playing/;
+  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/coming-soon/;
+  - https://www.mcmenamins.com/kennedy-school/kennedy-school-theater/view-by-date/;
+
+
+AMC Mill Plain
+AMC Progress Ridge
+AMC Vancouver Mall
+
+
+Cinemark XD Clackamas Town Center
+Cinemark (82nd)
+
+
+Electric Castles Wunderland
+Wunderland Milwaukie
+Wunderland
