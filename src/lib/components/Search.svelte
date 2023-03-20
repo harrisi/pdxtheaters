@@ -27,17 +27,29 @@
   function dsChange(e) {
     searchEnd = dayjs(e.target.value).endOf('day').format(dtFormat);
   }
+  function debounce(func, timeout = 300){
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}
+
+let form
+
 </script>
 
 <div>
   <!-- can I just store this in a store? -->
-  <form id="searchForm">
+  <form id="searchForm" bind:this={form}>
     <!-- this will be a bit of a hassle to deal with, but oh well. -->
     <input
       type="search"
       id="search"
       name="q"
       placeholder="What to watch?"
+      on:input={debounce(() => form.requestSubmit())}
+      autofocus
     />
     <!-- this input type wasn't supported by iOS until JANUARY 22 2023. That was ten days ago.
     it's been supported by Opera since 2011. To be fair, FireFox didn't support it until 2021.

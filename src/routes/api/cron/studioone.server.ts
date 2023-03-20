@@ -35,6 +35,7 @@ export async function studioone() {
     }
 
     for (let u of paths.map((path) => `${url}/${path}`)) {
+      console.log(u)
       // fetch each path, gets us showtimes for each day available
       fetch(u)
         .then((res) => res.text())
@@ -80,7 +81,7 @@ export async function studioone() {
             let curMovie = {
               theater_name: theater,
               movie_title: '',
-              showtime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+              showtime: dayjs().format('YYYY-MM-DD HH:mm'),
               //url: '',
             };
 
@@ -92,6 +93,7 @@ export async function studioone() {
             ) {
               let movie_title = ((curNode as HTMLElement).textContent || '')
                 .replace(/^21\+/, '')
+                .replace(/^ATMOS/, '')
                 .trim()
                 .split('\n')[0];
               let curSoldOut = curNode.nodeName == '#text';
@@ -112,7 +114,8 @@ export async function studioone() {
                 // lol
                 time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date'));
                 curMovie.showtime = time
-                  .format('YYYY-MM-DD HH:mm:ss');
+                  .format('YYYY-MM-DD HH:mm');
+                console.log(curMovie.showtime)
                 // curMovie.url = `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`
                 // curMovie.showtimes.push({
                 //   time,
@@ -127,7 +130,7 @@ export async function studioone() {
                 curMovie = {
                   theater_name: theater,
                   movie_title: movie_title,
-                  showtime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+                  showtime: dayjs().format('YYYY-MM-DD HH:mm'),
                 };
               } while (
                 i < movieAndShowtimeNodes.length &&
