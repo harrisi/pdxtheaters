@@ -11,6 +11,7 @@ const config = {
   kit: {
     adapter: adapter({
       runtime: 'edge',
+      regions: ['pdx1',],
     }),
     // I like this, I think, but db/ should be in ./src/lib/server/
     // https://kit.svelte.dev/docs/server-only-modules
