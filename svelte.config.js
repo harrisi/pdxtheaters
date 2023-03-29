@@ -9,7 +9,9 @@ const config = {
   preprocess: vitePreprocess(),
 
   kit: {
-    adapter: adapter(),
+    adapter: adapter({
+      runtime: 'edge',
+    }),
     // I like this, I think, but db/ should be in ./src/lib/server/
     // https://kit.svelte.dev/docs/server-only-modules
     alias: {
