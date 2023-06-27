@@ -48,8 +48,6 @@ export async function cst() {
     next = dom.window.document.querySelector(
       '.tribe-events-c-top-bar__nav-link--next'
     ).href;
-  console.log(next)
-  console.log(toInsert)
   } while (next);
 
   // if no next page, we're done

@@ -99,7 +99,7 @@ export async function cinema21() {
     //   }
     // }
 
-    console.log(toInsert)
+    // console.log(toInsert)
 
     await screenings.insert(toInsert);
   // } catch (e) {

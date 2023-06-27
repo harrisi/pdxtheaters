@@ -47,7 +47,7 @@ export async function cinemagic() {
       })
   }
 
-  console.log(toInsert)
+  // console.log(toInsert)
 
   await screenings.insert(toInsert)
 }

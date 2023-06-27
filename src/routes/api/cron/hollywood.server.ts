@@ -35,6 +35,6 @@ export async function hollywood() {
     }
   }
 
-  console.log(toInsert)
+  // console.log(toInsert)
   await screenings.insert(toInsert)
 }
