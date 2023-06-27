@@ -12,10 +12,10 @@ dayjs.tz.setDefault('America/Los_Angeles')
 
 export async function studioone() {
   try {
-    let theater = 'Studio One';
-    let url = 'https://895645.formovietickets.com:2235';
+    const theater = 'Studio One';
+    const url = 'https://895645.formovietickets.com:2235';
 
-    let doc: Document = await fetch(url)
+    const doc: Document = await fetch(url)
       .then((res) => res.text())
       .then((html) => {
         return new JSDOM(html).window.document;
@@ -23,19 +23,19 @@ export async function studioone() {
 
     // let doc: Document = await readFile('./src/routes/api/cron/studioone').then(buf => new JSDOM(buf).window.document)
 
-    let dateNodes = doc.querySelector(
+    const dateNodes = doc.querySelector(
       '#schedule > table > tbody > tr > td.rightcol > form > select'
     ) as HTMLSelectElement;
 
-    let paths = [];
+    const paths = [];
 
     // gets all days' urls that are available
-    for (let child of dateNodes?.options ?? []) {
+    for (const child of dateNodes?.options ?? []) {
       paths.push(child.value);
     }
 
-    for (let u of paths.map((path) => `${url}/${path}`)) {
-      console.log(u)
+    for (const u of paths.map((path) => `${url}/${path}`)) {
+      // console.log(u)
       // fetch each path, gets us showtimes for each day available
       fetch(u)
         .then((res) => res.text())
@@ -48,7 +48,7 @@ export async function studioone() {
            * it looks like I can check `showtime.nextElementSibling.nodeName === 'A'`, and if so, it's
            * a showtime for the same movie.
            */
-          let rightcol = document?.querySelector('td.rightcol')?.childNodes;
+          const rightcol = document?.querySelector('td.rightcol')?.childNodes;
           // this skips over the select and whatnot. By default it's 3.
           let startOfMoviesIndex = 3;
           // this is maybe a bad idea. it should also be 3 but if something changes maybe it'll help.
@@ -57,8 +57,8 @@ export async function studioone() {
           );
 
           // consume iterator
-          let movieAndShowtimeNodes: ChildNode[] = [];
-          for (let [k, v] of rightcol?.entries() ?? []) {
+          const movieAndShowtimeNodes: ChildNode[] = [];
+          for (const [k, v] of rightcol?.entries() ?? []) {
             if (k <= 2) continue;
             if (v.nodeName === 'B') {
               // @ts-ignore
@@ -73,7 +73,7 @@ export async function studioone() {
           }
 
           // movieAndShowtimeNodes = movieAndShowtimeNodes.slice(startOfMoviesIndex)
-          let movieAndShowtimes = [];
+          const movieAndShowtimes = [];
 
           // wow what a mess
           for (let i = 0; i < movieAndShowtimeNodes.length; ) {
@@ -85,18 +85,18 @@ export async function studioone() {
               //url: '',
             };
 
-            let curNode = movieAndShowtimeNodes[i];
+            const curNode = movieAndShowtimeNodes[i];
 
             if (
               (curNode as HTMLAnchorElement).className == 'displaytitle' ||
               curNode.nodeName == '#text'
             ) {
-              let movie_title = ((curNode as HTMLElement).textContent || '')
+              const movie_title = ((curNode as HTMLElement).textContent || '')
                 .replace(/^21\+/, '')
                 .replace(/^ATMOS/, '')
                 .trim()
                 .split('\n')[0];
-              let curSoldOut = curNode.nodeName == '#text';
+              const curSoldOut = curNode.nodeName == '#text';
               i++;
               do {
                 let el;
@@ -115,7 +115,7 @@ export async function studioone() {
                 time = dayjs(time).set('date', dayjs(u.slice(-8)).get('date'));
                 curMovie.showtime = time
                   .format('YYYY-MM-DD HH:mm');
-                console.log(curMovie.showtime)
+                // console.log(curMovie.showtime)
                 // curMovie.url = `${url}/${a.href.replace(/&RtsPurchaseId=[0-9a-f-]*/, '')}`
                 // curMovie.showtimes.push({
                 //   time,

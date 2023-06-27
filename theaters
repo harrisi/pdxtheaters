@@ -5,6 +5,7 @@ Should separate out local theaters from chains like Regal, Century since the lat
 Moreland Theater
   - morelandtheater.com; (#Table2 > tbody > tr > td.rightcol > form > select).selected; a.displaytitle; a.showtime;
   - also lists other days in the form
+  - done
 
 Cinemagic
   - (tickets.)thecinemagictheater.com; selector is annoyingly complex.
@@ -36,12 +37,16 @@ Laurelhurst
 Studio One Theaters
   - done
 
-Academy Theater
 Clinton Street
+  - done
+
+Hollywood Theater
+  - done
+
+Academy Theater
 Avalon
 Empiracal
 5th Avenue
-Hollywood Theater
 Lake Theater
 PAM CUT
 Canby Cinema 8
