@@ -141,31 +141,29 @@ async function run() {
 
 export const GET = (async () => {
   try {
-    let res = await Promise.all([
-      moreland().catch((e) => {
-        throw error(500, e);
-      }),
-      laurelhurst().catch((e) => {
-        throw error(500, e);
-      }),
-      studioone().catch((e) => {
-        throw error(500, e);
-      }),
-      cinema21().catch(e => {
-        throw error(500, e)
-      }),
-      cinemagic().catch(e => {
-        throw error(500, e)
-      }),
-      cst().catch(e => {
-        throw error(500, e)
-      }),
-      hollywood().catch(e => {
-        throw error(500, e)
-      }),
-    ]);
+    moreland().catch((e) => {
+      throw error(500, e);
+    });
+    laurelhurst().catch((e) => {
+      throw error(500, e);
+    });
+    studioone().catch((e) => {
+      throw error(500, e);
+    });
+    cinema21().catch((e) => {
+      throw error(500, e);
+    });
+    cinemagic().catch((e) => {
+      throw error(500, e);
+    });
+    cst().catch((e) => {
+      throw error(500, e);
+    });
+    hollywood().catch((e) => {
+      throw error(500, e);
+    });
     // should return something better
-    return json({ ok: 200, res });
+    return json({ ok: 200 });
   } catch (err: any) {
     throw error(500, err.message);
   }
