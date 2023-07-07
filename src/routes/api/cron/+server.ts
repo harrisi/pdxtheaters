@@ -139,31 +139,52 @@ async function run() {
   return res;
 }
 
-export const GET = (async () => {
+export const GET = (async ({url}) => {
+  const theaters = url.searchParams.get('theater').split(',')
   try {
-    moreland().catch((e) => {
-      throw error(500, e);
-    });
-    laurelhurst().catch((e) => {
-      throw error(500, e);
-    });
-    studioone().catch((e) => {
-      throw error(500, e);
-    });
-    cinema21().catch((e) => {
-      throw error(500, e);
-    });
-    cinemagic().catch((e) => {
-      throw error(500, e);
-    });
-    cst().catch((e) => {
-      throw error(500, e);
-    });
-    hollywood().catch((e) => {
-      throw error(500, e);
-    });
-    // should return something better
-    return json({ ok: 200 });
+    for (let theater of theaters) {
+      switch (theater) {
+        case 'moreland':
+          moreland().catch((e) => {
+          throw error(500, e);
+        });
+        break;
+        case 'laurelhurst':
+          laurelhurst().catch((e) => {
+          throw error(500, e);
+        });
+        break;
+        case 'studioone':
+          studioone().catch((e) => {
+          throw error(500, e);
+        });
+        break;
+        case 'cinema21':
+          cinema21().catch((e) => {
+          throw error(500, e);
+        });
+        break;
+        case 'cinemagic':
+          cinemagic().catch((e) => {
+          throw error(500, e);
+        });
+        break;
+        case 'cst':
+          cst().catch((e) => {
+          throw error(500, e);
+        });
+        break;
+        case 'hollywood':
+          hollywood().catch((e) => {
+          throw error(500, e);
+        });
+        break;
+        // should return something better
+        default:
+          throw error(500, 'no theater')
+      }
+      return json({ ok: 200 });
+    }
   } catch (err: any) {
     throw error(500, err.message);
   }
