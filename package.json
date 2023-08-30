@@ -27,7 +27,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte3": "^4.0.0",
     "jsdom": "^21.0.0",
-    "mongodb": "^4.13.0",
+    "mongodb": "^4.17.0",
     "prettier": "^2.8.0",
     "prettier-plugin-svelte": "^2.10.1",
     "svelte": "^4.0.0",
